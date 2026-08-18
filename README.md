@@ -61,6 +61,27 @@ dsh plugin --profile web add link:./dsh-plugin-control
 - 只管理 profile 层 `cordis.patch.yml`；若 home 层 `~/.dsh/cordis.patch.yml` 存在同名补丁，需要用户自行处理。
 - 改写 patch 文件时可能规范化 YAML 注释（语义保留，注释可能丢失）。
 
+## Superpowers 技能集
+
+本仓库把 [obra/superpowers](https://github.com/obra/superpowers) v6.3.0（MIT）的技能包直接 vendor 进 `.dsh/skills/`，这是 DSH 的项目级技能目录（`<project>/.dsh/skills/<name>/SKILL.md`）。当 DSH 在本项目目录下工作时，会自动加载以下 14 个技能，无需额外安装：
+
+- `using-superpowers`（入口：要求在任何回复前先检查并调用相关技能）
+- `brainstorming` / `writing-plans` / `executing-plans` / `subagent-driven-development`
+- `test-driven-development` / `systematic-debugging` / `verification-before-completion`
+- `dispatching-parallel-agents` / `using-git-worktrees`
+- `requesting-code-review` / `receiving-code-review` / `finishing-a-development-branch`
+- `writing-skills`
+
+更新方式：从本地 Codex 缓存（或上游 Git 仓库）重新复制：
+
+```sh
+SRC=~/.codex/plugins/cache/openai-curated-remote/superpowers/6.3.0
+DST=.dsh/skills
+mkdir -p "$DST" && cp -r "$SRC/skills/." "$DST/" && cp "$SRC/LICENSE" "$DST/LICENSE"
+```
+
+> 注意：`.dsh/skills/` 根目录下不要放置无 frontmatter 的裸 `.md` 文件，DSH 会把它们当作 flat skill 解析并告警忽略。
+
 ## 开发
 
 ```sh

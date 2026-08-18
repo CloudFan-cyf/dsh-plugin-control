@@ -25,6 +25,13 @@
 - **热生效**：依赖 DSH 现有的 `watchUserPatches` HMR watcher；切换后由服务端有界轮询 `ctx.loader.entries()` 确认状态，最多 10 秒。
 - **安全**：HTTP API 仅允许 loopback + 同源请求；路径前缀 `/api/dsh-plugin-control`。
 
+## Superpowers 技能集
+
+- 仓库 vendor 了 [obra/superpowers](https://github.com/obra/superpowers) v6.3.0（MIT）到 `.dsh/skills/`，DSH 在项目目录下会自动加载（project-dsh root，rank 100）。
+- 技能名以目录名 + `SKILL.md` 的 frontmatter（`name` / `description`）为准；本机验证 14/14 通过。
+- 本项目的 agent（包括本仓库开发、测试、评审工作）应遵循 superpowers 方法论：先 `brainstorming` → `writing-plans` → `executing-plans` / `subagent-driven-development` → `test-driven-development` → `verification-before-completion`。
+- 更新时整目录替换 `.dsh/skills/` 并保留 `LICENSE`；不要在技能根目录放无 frontmatter 的裸 `.md` 文件。
+
 ## 关键约束
 
 - 只使用官方 NPM SDK 和公开 DSH 行为，**不修改 DSH 源码**。
@@ -46,6 +53,7 @@ src/
 scripts/build.mjs   生成 lib/，并将 client.js 包成 ModuleLoader 外壳
 test/               Node 内置 test runner 的单元测试
 lib/                构建产物（提交）
+.dsh/skills/        vendor 的 Superpowers 技能集（v6.3.0，MIT，上游 obra/superpowers）
 PLAN.md             开发计划与进度
 ```
 
