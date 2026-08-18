@@ -14,9 +14,9 @@
 - [x] `scripts/build.mjs` 构建脚本
 - [x] 单元测试 `test/patch-store.test.mjs`
 - [x] 安装依赖、构建、跑测试（7/7 通过）
-- [ ] 安装到 web profile 并验证 dump-config
-- [ ] 临时第二实例 API 冒烟测试
-- [ ] Git 提交、创建 GitHub 仓库、推送、添加 topics
+- [x] 安装到 web profile 并验证 dump-config
+- [x] smoke profile 冒烟测试（列表 + 开关 + patch 持久化）
+- [~] Git 提交、创建 GitHub 仓库、推送、添加 topics
 - [ ] 最终人工验收（当前 GUI 重启后）
 
 ## 关键接口
