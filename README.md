@@ -30,6 +30,13 @@ pnpm build
 dsh plugin --profile web add link:./dsh-plugin-control
 ```
 
+> Windows 下如果仓库路径包含空格，`dsh plugin` 的 shell 转发可能把 `link:` 参数拆开。可先创建无空格 junction：
+>
+> ```sh
+> powershell -NoProfile -Command "New-Item -ItemType Junction -Path 'C:\dsh-plugin-control-dev' -Target 'D:\Github projects\dsh-dev\dsh-plugin-control' | Out-Null"
+> dsh plugin --profile web add link:C:/dsh-plugin-control-dev
+> ```
+
 > 首次安装后需要重启 `dsh web` 才会加载新 bundle；后续开关操作依赖 HMR，不需要重启。
 
 ## 使用
