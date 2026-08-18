@@ -7,7 +7,7 @@ const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
 
 mkdirSync(join(root, 'lib'), { recursive: true })
 
-const hostFiles = ['index.js', 'routes.js', 'plugin-list.js', 'patch-store.js']
+const hostFiles = ['index.js', 'routes.js', 'plugin-list.js', 'patch-store.js', 'settings-switches.js']
 for (const file of hostFiles) {
   copyFileSync(join(root, 'src', file), join(root, 'lib', file))
 }
