@@ -8,6 +8,7 @@ DSH Web GUI 插件控制中心：以卡片列表聚合展示当前 profile 已�
 - 卡片展示每个 Loader 插件条目：名称、版本、简介、启用状态。
 - 支持搜索与「仅显示已安装插件」过滤。
 - 在线开关直接写入 profile 层 `cordis.patch.yml`，由 DSH 现有 HMR watcher 热生效，无需手动重启。
+- 设置感知开关：对通过自身设置项控制界面的插件（如 dsh-pet），停用会写它的设置开关（`pet.enabled`），宠物会真正消失而不是变成不可交互的“僵尸”。
 - 核心基础设施条目与本插件自身不可关闭，避免误操作。
 
 ## 安装
@@ -43,13 +44,14 @@ dsh plugin --profile web add link:./dsh-plugin-control
 
 1. 重启 `dsh web` 后打开 设置 → 插件控制。
 2. 卡片显示插件名称、版本、简介与启用状态。
-3. 点击开关即可启用/停用插件；状态写入 `~/.dsh/profiles/web/cordis.patch.yml`。
+3. 点击开关即可启用/停用插件；状态写入 `~/.dsh/profiles/web/cordis.patch.yml`（设置感知插件同时写入对应 `settings.yaml` 分节，如 `pet.enabled`）。
 
 ## 工作原理
 
 - 列表来自 `ctx.loader.entries()`。
 - 版本与简介读取 `<profileDir>/node_modules/<pkg>/package.json` 与 `$DSH_HOME/profiles/node_modules/<pkg>/package.json`。
 - 切换写 profile 层 patch，并由现有 `watchUserPatches` 热重载。
+- 对「设置感知」插件（见 `src/settings-switches.js`），开关改为写插件的 settings namespace 字段（如 `pet.enabled`），并保持 Loader 挂载以保证设置能生效。
 
 ## 安全
 
