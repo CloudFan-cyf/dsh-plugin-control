@@ -91,7 +91,7 @@ export function makeRoutes({ ctx, profileDir }) {
 
   const findEntry = (entryId) => {
     for (const entry of ctx.loader.entries()) {
-      if (entry.id === entryId) return entry
+      if (entry.id === entryId || entry.options?.id === entryId) return entry
     }
     return undefined
   }
