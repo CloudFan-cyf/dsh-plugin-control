@@ -1,0 +1,4 @@
+# dsh-plugin-control bundle layer.
+- insert:
+    - id: plugin-control
+      name: '@cloudfan-cyf/dsh-plugin-control'
