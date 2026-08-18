@@ -197,6 +197,27 @@ function phaseLabel(phase, t) {
   return t(PHASE_KEYS[phase] || 'phaseUnobserved')
 }
 
+function filterEntries(entries, query, onlyDsh) {
+  const needle = String(query ?? '').trim().toLowerCase()
+  return entries.filter((entry) => {
+    if (onlyDsh && !entry.isDshPlugin) return false
+    if (needle.length === 0) return true
+    return [
+      entry.moduleName,
+      entry.packageName,
+      entry.packageVersion,
+      entry.packageDescription,
+      entry.entryId,
+      entry.runtimeEntryId,
+    ].filter(Boolean).join(' ').toLowerCase().includes(needle)
+  })
+}
+
+function selectDetail(entries, selectedId) {
+  if (selectedId === null || selectedId === undefined) return null
+  return entries.find((entry) => entry.entryId === selectedId) ?? null
+}
+
 function PluginControlSection(props) {
   const { t } = props
   const [state, setState] = React.useState({ status: 'loading', entries: [], error: '' })
@@ -253,23 +274,12 @@ function PluginControlSection(props) {
     }
   }
 
-  const filtered = React.useMemo(() => {
-    const needle = query.trim().toLowerCase()
-    return state.entries.filter((entry) => {
-      if (onlyDsh && !entry.isDshPlugin) return false
-      if (needle.length === 0) return true
-      return [
-        entry.moduleName,
-        entry.packageName,
-        entry.packageVersion,
-        entry.packageDescription,
-        entry.entryId,
-        entry.runtimeEntryId,
-      ].filter(Boolean).join(' ').toLowerCase().includes(needle)
-    })
-  }, [state.entries, query, onlyDsh])
+  const filtered = React.useMemo(
+    () => filterEntries(state.entries, query, onlyDsh),
+    [state.entries, query, onlyDsh],
+  )
 
-  const selected = selectedId === null ? null : state.entries.find((entry) => entry.entryId === selectedId)
+  const selected = selectDetail(state.entries, selectedId)
 
   const switchButton = (entry) => {
     if (!entry.toggleable) {
@@ -402,7 +412,7 @@ function PluginControlSection(props) {
     filtered.length > 0 ? h('ul', { className: styles.grid }, filtered.map(renderCard)) : null,
   )
 
-  if (selected !== undefined) return renderDetail(selected)
+  if (selected !== null) return renderDetail(selected)
   return listView
 }
 
@@ -424,3 +434,4 @@ function apply(ctx) {
 
 exports.apply = apply
 exports.inject = inject
+exports.__internals = { filterEntries, selectDetail, phaseLabel }
